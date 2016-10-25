@@ -1,6 +1,7 @@
 #ifndef __tree_make_h__
 #define __tree_make_h__
 #include <iostream>
+#include <vector>
 
 #include <TTree.h>
 #include <TFile.h>

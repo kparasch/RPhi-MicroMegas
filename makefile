@@ -26,5 +26,9 @@ $(OBJDIR)/hist_generator.o: $(SRCDIR)/hist_generator.cpp $(INCDIR)/hist_generato
 	@echo $@
 	@$(CC) -c $(CFLAGS) $< -o $@
 
+$(OBJDIR)/event_functions.o: $(SRCDIR)/event_functions.cpp $(INCDIR)/event_functions.h
+	@echo $@
+	@$(CC) -c $(CFLAGS) $< -o $@
+
 clean: 
 	rm $(OBJDIR)/*.o
