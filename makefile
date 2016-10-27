@@ -12,22 +12,23 @@ CFLAGS = `root-config --libs --cflags` \
 all: $(OBJECTS) mymain
 
 mymain:	$(OBJECTS)
+	@echo "Building executable..."
 	@$(CC) $(CFLAGS) $^ -o mymain
 
 $(OBJDIR)/raw.o: $(SRCDIR)/raw.C $(INCDIR)/raw.h 
-	@echo $@
+	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 	
 $(OBJDIR)/RPhi_analysis.o: $(SRCDIR)/RPhi_analysis.cpp $(INCDIR)/RPhi_analysis.h 
-	@echo $@
+	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
 $(OBJDIR)/hist_generator.o: $(SRCDIR)/hist_generator.cpp $(INCDIR)/hist_generator.h
-	@echo $@
+	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
 $(OBJDIR)/event_functions.o: $(SRCDIR)/event_functions.cpp $(INCDIR)/event_functions.h
-	@echo $@
+	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
 clean: 
