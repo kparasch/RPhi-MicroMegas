@@ -31,5 +31,9 @@ $(OBJDIR)/event_functions.o: $(SRCDIR)/event_functions.cpp $(INCDIR)/event_funct
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
+$(OBJDIR)/channels_map.o: $(SRCDIR)/channels_map.cpp $(INCDIR)/channels_map.h
+	@echo "Building "$@"..."
+	@$(CC) -c $(CFLAGS) $< -o $@
+
 clean: 
 	rm $(OBJDIR)/*.o
