@@ -19,19 +19,23 @@ $(OBJDIR)/raw.o: $(SRCDIR)/raw.C $(INCDIR)/raw.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 	
-$(OBJDIR)/RPhi_analysis.o: $(SRCDIR)/RPhi_analysis.cpp $(INCDIR)/RPhi_analysis.h 
+$(OBJDIR)/data.o: $(SRCDIR)/data.C $(INCDIR)/data.h 
+	@echo "Building "$@"..."
+	@$(CC) -c $(CFLAGS) $< -o $@
+	
+$(OBJDIR)/RPhi_analysis.o: $(SRCDIR)/RPhi_analysis.cc $(INCDIR)/RPhi_analysis.h 
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
-$(OBJDIR)/hist_generator.o: $(SRCDIR)/hist_generator.cpp $(INCDIR)/hist_generator.h
+$(OBJDIR)/hist_generator.o: $(SRCDIR)/hist_generator.cc $(INCDIR)/hist_generator.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
-$(OBJDIR)/event_functions.o: $(SRCDIR)/event_functions.cpp $(INCDIR)/event_functions.h
+$(OBJDIR)/event_functions.o: $(SRCDIR)/event_functions.cc $(INCDIR)/event_functions.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
-$(OBJDIR)/channels_map.o: $(SRCDIR)/channels_map.cpp $(INCDIR)/channels_map.h
+$(OBJDIR)/channels_map.o: $(SRCDIR)/channels_map.cc $(INCDIR)/channels_map.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 

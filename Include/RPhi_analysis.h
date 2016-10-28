@@ -10,7 +10,9 @@
 #include <TCanvas.h>
 
 #include "raw.h"
+#include "data.h"
 #include "hist_generator.h"
+#include "channels_map.h"
 
 void Initialize_array(int* array, int size);
 void Initialize_array(double* array, int size);

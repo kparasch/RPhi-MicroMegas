@@ -21,7 +21,7 @@ void map_channels(int *strip, int *apv_config, int second_chamber_present)
     // strip equal to -1 means empty channel 
     //=============================================================
 
-    std::cout << " ---------- Generating Channels-to-Strip Map ---------- " << std::endl;
+    std::cout << std::endl << " ---------- Generating Channels-to-Strip Map ---------- " << std::endl;
 
     for( int k = 0 ;  k < second_chamber_present + 1 ; ++k )
     {
@@ -49,12 +49,12 @@ void map_channels(int *strip, int *apv_config, int second_chamber_present)
                         strip[j+128*(i+5*k)] = channel_To_Strip_R12(j);
                         break;
                 }
-                std::cout << i << " " << j << " : " << strip[j+128*(i+5*k)] << std::endl;
+//                std::cout << i << " " << j << " : " << strip[j+128*(i+5*k)] << std::endl;
             }
         }
     }
 
-    std::cout << " ---------- Channels-to-Strip Map Generated ---------- " << std::endl;
+    std::cout << " ---------- Channels-to-Strip Map Generated ---------- " << std::endl << std::endl;
 
     return; 
 }
@@ -85,7 +85,7 @@ int channel_To_Strip_R12(int i)
 	}
 	
     int str;	
-	if ( ieven )
+    if ( ieven )
 	{
 		str = 22 + (i-2)/2 ;
 	}
@@ -131,7 +131,7 @@ int channel_To_Strip_R3(int i)
 	{
 		if ( i == 0 )
         {
-            std::cout << "R3 matching called incorrectly" << std::endl;
+//            std::cout << "R3 matching called incorrectly" << std::endl;
             return -1;
         }
     }
