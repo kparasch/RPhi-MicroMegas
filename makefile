@@ -39,5 +39,9 @@ $(OBJDIR)/channels_map.o: $(SRCDIR)/channels_map.cc $(INCDIR)/channels_map.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
+$(OBJDIR)/clustering.o: $(SRCDIR)/clustering.cc $(INCDIR)/clustering.h
+	@echo "Building "$@"..."
+	@$(CC) -c $(CFLAGS) $< -o $@
+
 clean: 
 	rm $(OBJDIR)/*.o

@@ -57,7 +57,8 @@ int main(int argc, char* argv[])
         int empty_mean_hits = 0;
         int empty_rms_hits = 0;
 
-        vector<vector<double>> *r_clusters_hit_id = new vector<vector<double>>();        
+        vector<vector<int>> *r_clusters_hit_id = new vector<vector<int>>();        
+        vector<vector<int>> *r_clusters_strip_id = new vector<vector<int>>();        
         vector<int> *good_hits_id = new vector<int>();
 
         int n_hits = raw_tree->apv_q->size();
@@ -65,7 +66,7 @@ int main(int argc, char* argv[])
 
         for( int hit = 0; hit < n_hits ; hit++ )        
         {
-            if(v0) cout << "Proccessing hit: " << hit << endl;
+            if(v1) cout << "Proccessing hit: " << hit << endl;
             double charge[27];
             for( int j = 0 ; j < 27 ; j++ )
             {
@@ -101,7 +102,7 @@ int main(int argc, char* argv[])
                 empty_rms_hits += charge_square/27.;
             }
 
-            if(qmax > apv_thresholds[connector_of_apv[APV_id]])
+            if(qmax > apv_thresholds[connector_of_apv[APV_id]] && strip_of_channel[APV_channel+128*APV_id] > 0)
                 good_hits_id->push_back(hit);
 
         }
@@ -128,10 +129,12 @@ int main(int argc, char* argv[])
 
         cout << "Number of good hits detected: " << good_hits_id->size() << endl;
 
-        
+        r_clustering(r_clusters_hit_id, r_clusters_strip_id, good_hits_id, raw_tree, connector_of_apv, strip_of_channel); 
+
         cin.get();
         delete good_hits_id;
         delete r_clusters_hit_id;
+        delete r_clusters_strip_id;
     }
 
     delete root_file;

@@ -15,6 +15,7 @@
 #include "hist_generator.h"
 #include "channels_map.h"
 #include "event_functions.h"
+#include "clustering.h"
 
 
 using namespace std;
