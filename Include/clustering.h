@@ -1,7 +1,6 @@
 #ifndef __clustering_h__
 #define __clustering_h__
 
-#include <iostream>
 #include <vector>
 #include <algorithm>
 

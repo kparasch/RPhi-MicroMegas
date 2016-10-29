@@ -43,5 +43,9 @@ $(OBJDIR)/clustering.o: $(SRCDIR)/clustering.cc $(INCDIR)/clustering.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
+$(OBJDIR)/fitting_functions.o: $(SRCDIR)/fitting_functions.cc $(INCDIR)/fitting_functions.h
+	@echo "Building "$@"..."
+	@$(CC) -c $(CFLAGS) $< -o $@
+
 clean: 
 	rm $(OBJDIR)/*.o

@@ -9,6 +9,7 @@
 #include <TH1D.h>
 #include <TCanvas.h>
 #include <TMath.h>
+#include <TApplication.h>
 
 #include "raw.h"
 #include "data.h"
@@ -16,6 +17,7 @@
 #include "channels_map.h"
 #include "event_functions.h"
 #include "clustering.h"
+#include "fitting_functions.h"
 
 
 using namespace std;

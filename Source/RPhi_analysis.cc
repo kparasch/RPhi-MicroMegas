@@ -130,17 +130,33 @@ int main(int argc, char* argv[])
         cout << "Number of good hits detected: " << good_hits_id->size() << endl;
 
         r_clustering(r_clusters_hit_id, r_clusters_strip_id, good_hits_id, raw_tree, connector_of_apv, strip_of_channel); 
+        cout << "Number of R clusters detected: " << r_clusters_hit_id->size() << endl;
+
+        vector<vector<double>> *r_cluster_hit_fit_pars = new vector<vector<double>>();
+        vector<vector<double>> *r_cluster_hit_fit_par_errs = new vector<vector<double>>();
+        
+        fit_good_hits(r_clusters_hit_id, raw_tree, data_tree, r_cluster_hit_fit_pars, r_cluster_hit_fit_par_errs);
+
+        for(int j = 0 ; j < r_cluster_hit_fit_pars->size() ; j++)
+        {
+            for( int k = 0 ; k < r_cluster_hit_fit_pars->at(j).size() ; k++)
+            {
+                cout << r_cluster_hit_fit_pars->at(j).at(k) << "\t" << r_cluster_hit_fit_par_errs->at(j).at(k) << endl;
+            }
+            cout << endl;
+        }
 
         cin.get();
         delete good_hits_id;
         delete r_clusters_hit_id;
         delete r_clusters_strip_id;
+        delete r_cluster_hit_fit_pars;
+        delete r_cluster_hit_fit_par_errs;
     }
 
     delete root_file;
     delete raw_tree;
     delete data_tree;
-
 }
 
 
