@@ -8,14 +8,14 @@
 #include <TChain.h>
 #include <TH1D.h>
 #include <TCanvas.h>
+#include <TMath.h>
 
 #include "raw.h"
 #include "data.h"
 #include "hist_generator.h"
 #include "channels_map.h"
+#include "event_functions.h"
 
-void Initialize_array(int* array, int size);
-void Initialize_array(double* array, int size);
 
 using namespace std;
 #endif
