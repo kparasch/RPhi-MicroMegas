@@ -18,6 +18,7 @@
 #include "event_functions.h"
 #include "clustering.h"
 #include "fitting_functions.h"
+#include "dumping.h"
 
 
 using namespace std;

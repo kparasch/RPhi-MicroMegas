@@ -1,7 +1,37 @@
 #include "clustering.h"
 
+/*void characterize_clusters(vector<int> *cluster_is_big, vector<int> *r_big_cluster_id, int r_clusters)
+{
+    int big_counter = 0;
+    for(int i = 0; i < r_clusters ; i++)
+    {
+        if(big_counter > r_big_cluster_id) big_counter -=1;
+        if(r_big_cluster_id->at(big_counter)==i)
+        {
+            cluster_is_big->push_back(1);
+            big_counter+=1;
+        }
+        else
+        {
+            cluster_is_big->push_back(0);
+        }
+    }
+    return;
+}
+*/
+void find_big_clusters(vector<vector<int>> *r_clusters_hit_id, vector<int> *big_cluster_id)
+{
+    for(int i = 0 ; i < r_clusters_hit_id->size() ; i ++)
+    {
+        if(r_clusters_hit_id->at(i).size() > 1)
+            big_cluster_id->push_back(i);
+    }
+    return;
+}
+
 void r_clustering(vector<vector<int>> *r_clusters_hit_id, vector<vector<int>> *r_clusters_strip_id, vector<int> *good_hits_id, raw *raw_tree, int *connector_of_apv, int *strip_of_channel)
 {
+    bool good_r_cluster_hit = 0;
     vector<int> *r_hit_id = new vector<int>();
     vector<int> *r_hit_strip_id = new vector<int>();
 
@@ -16,9 +46,10 @@ void r_clustering(vector<vector<int>> *r_clusters_hit_id, vector<vector<int>> *r
         {
             r_hit_id->push_back(hit_id);
             r_hit_strip_id->push_back(strip_id);
+            good_r_cluster_hit = 1;
         }
     }
-
+    if(!good_r_cluster_hit) return;
     sort_for_strip(r_hit_id, r_hit_strip_id);
     
     vector<int> cluster;

@@ -47,5 +47,9 @@ $(OBJDIR)/fitting_functions.o: $(SRCDIR)/fitting_functions.cc $(INCDIR)/fitting_
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
+$(OBJDIR)/dumping.o: $(SRCDIR)/dumping.cc $(INCDIR)/dumping.h
+	@echo "Building "$@"..."
+	@$(CC) -c $(CFLAGS) $< -o $@
+
 clean: 
 	rm $(OBJDIR)/*.o
