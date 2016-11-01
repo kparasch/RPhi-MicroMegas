@@ -1,4 +1,4 @@
-#include "hist_generator.h"
+#include "Histograms.h"
 
 Histograms::Histograms(int n_of_chambers)
 {

@@ -24,18 +24,8 @@ int main(int argc, char* argv[])
     int v0 = 0; //v for verbosity (level 0)
     int v1 = 0; //v for verbosity (level 1)
 
-//    TH1D *hist_vpeak[no_of_apvs];
-//    Generate_Hists_Vpeak(hist_vpeak, 0); //hist_generator.h
-
-//    TH1D *hist_qpeak[no_of_apvs];
-//    Generate_Hists_Qpeak(hist_qpeak, 0);
-
     Histograms *hists = new Histograms(1);
-//    TCanvas c1;
-//    hists->GetQmax(0)->Draw("hist");
-//    c1.SaveAs("yohist.png");
 
-    cin.get();
     cout << "Number of chambers detected: " << n_chambers << endl;
 
     int apv_config[n_chambers];
@@ -53,6 +43,7 @@ int main(int argc, char* argv[])
     int nentries = (raw_tree->fChain)->GetEntries(); 
     cout <<"Number of entries detected: " <<  nentries << endl;
 
+    cin.get();
     int counters[12]= {0,0,0,0,0,0,0,0,0,0,0,0};
     for(int i = 0; i < nentries; i++)
     {
@@ -60,13 +51,9 @@ int main(int argc, char* argv[])
         raw_tree->GetEntry(i);
         data_tree->GetEntry(i);
 
-        int n_empty_hits = 0;
+        EmptyChannels *empty_channels = new EmptyChannels(second_chamber_present);
+
         int n_apv_hits[5] = {0, 0, 0, 0, 0};
-        int n_apv_empty_hits[5] = {0, 0, 0, 0, 0};
-        int empty_mean_apv[5] = {0, 0, 0, 0, 0};
-        int empty_rms_apv[5] = {0, 0, 0, 0, 0};
-        int empty_mean_hits = 0;
-        int empty_rms_hits = 0;
 
         vector<vector<int>> *r_clusters_hit_id = new vector<vector<int>>();        
         vector<vector<int>> *r_clusters_strip_id = new vector<vector<int>>();        
@@ -103,40 +90,13 @@ int main(int argc, char* argv[])
 
             n_apv_hits[APV_id]++;
             if( strip_of_channel[APV_channel+128*APV_id] == -1)
-            {
-                double charge_square = charge_sum_square(charge);
-                n_empty_hits++;
-                n_apv_empty_hits[APV_id]++;
-                empty_mean_apv[APV_id]+= total_charge/27.;
-                empty_rms_apv[APV_id] += charge_square/27.;
-                empty_mean_hits += total_charge/27.;
-                empty_rms_hits += charge_square/27.;
-            }
+                empty_channels->Iterate(charge, APV_id);
 
             if(qmax > apv_thresholds[connector_of_apv[APV_id]] && strip_of_channel[APV_channel+128*APV_id] > 0)
                 good_hits_id->push_back(hit);
 
         }
-        for( int j = 0 ; j < 5 ; j++)
-        {
-            if(n_apv_empty_hits[j] >0)
-            {
-                empty_mean_apv[j] = empty_mean_apv[j]/n_apv_empty_hits[j];
-                empty_rms_apv[j] = empty_rms_apv[j]/n_apv_empty_hits[j]-empty_mean_apv[j]*empty_mean_apv[j];
-                if(empty_rms_apv[j] < 0)
-                    empty_rms_apv[j] = 0;
-                empty_rms_apv[j] = TMath::Sqrt(empty_rms_apv[j]);
-
-            }
-        }
-        if(n_empty_hits > 0)
-        {
-            empty_mean_hits = empty_mean_hits/n_empty_hits;
-            empty_rms_hits = empty_rms_hits/n_empty_hits-empty_mean_hits*empty_mean_hits;
-            if(empty_rms_hits < 0) 
-                empty_rms_hits = 0;
-            empty_rms_hits = TMath::Sqrt(empty_rms_hits);
-        }
+        empty_channels->Finalize();
 
         cout << "Number of good hits detected: " << good_hits_id->size() << endl;
 

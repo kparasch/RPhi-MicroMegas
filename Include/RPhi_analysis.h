@@ -14,13 +14,13 @@
 
 #include "raw.h"
 #include "data.h"
-#include "hist_generator.h"
+#include "Histograms.h"
 #include "channels_map.h"
 #include "event_functions.h"
 #include "clustering.h"
 #include "fitting_functions.h"
 #include "dumping.h"
-
+#include "EmptyChannels.h"
 
 void summary(int *counters);
 

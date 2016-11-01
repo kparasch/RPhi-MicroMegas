@@ -27,7 +27,7 @@ $(OBJDIR)/RPhi_analysis.o: $(SRCDIR)/RPhi_analysis.cc $(INCDIR)/RPhi_analysis.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
-$(OBJDIR)/hist_generator.o: $(SRCDIR)/hist_generator.cc $(INCDIR)/hist_generator.h
+$(OBJDIR)/Histograms.o: $(SRCDIR)/Histograms.cc $(INCDIR)/Histograms.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
@@ -48,6 +48,10 @@ $(OBJDIR)/fitting_functions.o: $(SRCDIR)/fitting_functions.cc $(INCDIR)/fitting_
 	@$(CC) -c $(CFLAGS) $< -o $@
 
 $(OBJDIR)/dumping.o: $(SRCDIR)/dumping.cc $(INCDIR)/dumping.h
+	@echo "Building "$@"..."
+	@$(CC) -c $(CFLAGS) $< -o $@
+
+$(OBJDIR)/EmptyChannels.o: $(SRCDIR)/EmptyChannels.cc $(INCDIR)/EmptyChannels.h
 	@echo "Building "$@"..."
 	@$(CC) -c $(CFLAGS) $< -o $@
 
