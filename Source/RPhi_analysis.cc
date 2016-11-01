@@ -24,12 +24,18 @@ int main(int argc, char* argv[])
     int v0 = 0; //v for verbosity (level 0)
     int v1 = 0; //v for verbosity (level 1)
 
-    TH1D *hist_vpeak[no_of_apvs];
-    Generate_Hists_Vpeak(hist_vpeak, 0); //hist_generator.h
+//    TH1D *hist_vpeak[no_of_apvs];
+//    Generate_Hists_Vpeak(hist_vpeak, 0); //hist_generator.h
 
-    TH1D *hist_qpeak[no_of_apvs];
-    Generate_Hists_Qpeak(hist_qpeak, 0);
+//    TH1D *hist_qpeak[no_of_apvs];
+//    Generate_Hists_Qpeak(hist_qpeak, 0);
 
+    Histograms *hists = new Histograms(1);
+//    TCanvas c1;
+//    hists->GetQmax(0)->Draw("hist");
+//    c1.SaveAs("yohist.png");
+
+    cin.get();
     cout << "Number of chambers detected: " << n_chambers << endl;
 
     int apv_config[n_chambers];
