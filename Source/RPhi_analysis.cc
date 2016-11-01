@@ -8,6 +8,9 @@ int main(int argc, char* argv[])
     //argv[4] = config of apv to physical connector chamber 2
     //
 
+    TBenchmark *bench = new TBenchmark();
+    bench->Start("full");
+
     double apv_thresholds[5] = {50,60,60,60,50};
     int connector_of_apv[5];
     for(int i = 0 ; i < 5 ; i++)
@@ -232,9 +235,13 @@ int main(int argc, char* argv[])
     counters[1] = nentries;
     summary(counters);
 
+    bench->Show("full");
+    
+
     delete root_file;
     delete raw_tree;
     delete data_tree;
+    delete bench;
 }
 
 void summary(int *counters)

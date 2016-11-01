@@ -10,6 +10,7 @@
 #include <TCanvas.h>
 #include <TMath.h>
 #include <TApplication.h>
+#include <TBenchmark.h>
 
 #include "raw.h"
 #include "data.h"

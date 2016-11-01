@@ -50,7 +50,7 @@ void dump(int *counter, int n_hits, vector<int> *good_hits_id, raw *raw_tree, ve
             break;
         }
     }
-    if(good_active_phi)
+    if(good_active_r)
         counter[7]++;
 
     if(good_active_phi && good_active_r)
