@@ -53,14 +53,14 @@ void dump(int *counter, int n_hits, vector<int> *good_hits_id, raw *raw_tree, ve
     if(good_active_phi)
         counter[7]++;
 
-    if(active_phi && active_r)
+    if(good_active_phi && good_active_r)
         counter[8]++;
 
     if(r_clusters_hit_id->size()>0)
         counter[9]++;
 
     bool biggerthan20=0;
-    if(r_clusters_hit_id->size() < 20)
+    if(r_clusters_hit_id->size() > 0 && r_clusters_hit_id->size() < 20)
     {
         counter[10]++;
         for(int i = 0 ; i < r_clusters_hit_id->size() ; i++)
@@ -72,7 +72,7 @@ void dump(int *counter, int n_hits, vector<int> *good_hits_id, raw *raw_tree, ve
             }
         }
     }
-    if(biggerthan20)
+    if(!biggerthan20)
         counter[11]++;
 
 }

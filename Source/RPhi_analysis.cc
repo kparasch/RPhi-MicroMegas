@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     int nentries = (raw_tree->fChain)->GetEntries(); 
     cout <<"Number of entries detected: " <<  nentries << endl;
 
-    int counters[11]= {0,0,0,0,0,0,0,0,0,0,0};
+    int counters[12]= {0,0,0,0,0,0,0,0,0,0,0,0};
     for(int i = 0; i < nentries; i++)
     {
         cout << "Event #" << i << endl;
@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
                 else
                 {
                     fit_params = r_cluster_hit_fit_pars->at(i).at(0);
-                    fit_param_errs = r_cluster_hit_fit_pars->at(i).at(0);
+                    fit_param_errs = r_cluster_hit_fit_par_errs->at(i).at(0);
                     cluster_strip = r_clusters_strip_id->at(i).at(0);
 //                    cout << "SMALL" << endl;
                 }
@@ -186,15 +186,37 @@ int main(int argc, char* argv[])
                 double arrival_time = fit_params.at(4);
                 double arriv_err = fit_param_errs.at(4);
                
-                std::cout << "strip: " << cluster_strip << std::endl;
-                std::cout << "inflection time: " << inflection_time << " +- " << inflect_err << std::endl;
-                std::cout << "arrival time: " << arrival_time << " +- " << arriv_err << std::endl;
-                
+                cout << "strip: " << cluster_strip << endl;
+                cout << "inflection time: " << inflection_time << " +- " << inflect_err << endl;
+                cout << "arrival time: " << arrival_time << " +- " << arriv_err << endl;
+            
+                cout << endl << r_clusters_hit_id->at(i).size() << " STRIPS HIT IN CLUSTER: " <<i<< endl;
+                for(int j = 0; j < r_clusters_hit_id->at(i).size() ; j++ )
+                {
+                    cout << "hit in cluster: " << j << endl;
+                    int strip_hit_apv_id = raw_tree->apv_id->at(r_clusters_hit_id->at(i).at(j));
+                    int strip_hit_apv_ch = raw_tree->apv_ch->at(r_clusters_hit_id->at(i).at(j));
+                    cout << "strip: " << strip_of_channel[strip_hit_apv_ch+128*strip_hit_apv_id] << endl;
+                    double strip_height = data_tree->apv_qmax->at(r_clusters_hit_id->at(i).at(j));
+                    double strip_height_pos = data_tree->apv_tbqmax->at(r_clusters_hit_id->at(i).at(j))*25+12.5;
+                    cout << "max: " << strip_height << " at time " << strip_height_pos << endl;
+                    vector<double> strip_fit_pars = r_cluster_hit_fit_pars->at(i).at(j);
+                    vector<double> strip_fit_errs = r_cluster_hit_fit_par_errs->at(i).at(j);
+                    cout << "fitted max: " << strip_fit_pars.at(0)+strip_fit_pars.at(3)<<endl;
+                    
+                    double inflection_point = strip_fit_pars.at(1);
+                    double inflection_error = strip_fit_errs.at(1);
+                    double strip_arrival = -2./strip_fit_pars.at(2) + strip_fit_pars.at(1);
+                    double arrival_err = TMath::Sqrt(strip_fit_errs.at(1)*strip_fit_errs.at(1)+16./strip_fit_pars.at(2)/strip_fit_pars.at(2)*strip_fit_errs.at(2)*strip_fit_errs.at(2));
+                    cout << "inflection time: " << inflection_point << " +- " << inflection_error << endl;
+                    cout << "arrival time: " << strip_arrival << " +- " << arrival_err<< endl;
+                    cout << endl;
+                }
             }
 
-
+            
         }
-      
+             
 //        cin.get();
 
         delete good_hits_id;
@@ -207,10 +229,24 @@ int main(int argc, char* argv[])
         delete big_r_cluster_fit_pars;
         delete big_r_cluster_fit_par_errs;
     }
+    counters[1] = nentries;
+    summary(counters);
 
     delete root_file;
     delete raw_tree;
     delete data_tree;
 }
 
-
+void summary(int *counters)
+{
+    cout << "Number of events: "  << counters[1] << endl;  
+    cout << "Phi active: "  << counters[3] << endl;  
+    cout << "R active: " << counters[4] << endl;
+    cout << "R & Phi active: " << counters[5] << endl;
+    cout << "good Phi active: " << counters[6] << endl;
+    cout << "good R active: " << counters[7] << endl;
+    cout << "good R & Phi active: " << counters[8] << endl;
+    cout << "Events with R-clusters: " << counters[9] << endl;
+    cout << "Events with less than 20 R-clusters: " << counters[10] << endl;
+    cout << "Events with R-clusters only smaller than 20: " << counters[11] << endl;
+}

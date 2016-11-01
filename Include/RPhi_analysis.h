@@ -21,5 +21,7 @@
 #include "dumping.h"
 
 
+void summary(int *counters);
+
 using namespace std;
 #endif
