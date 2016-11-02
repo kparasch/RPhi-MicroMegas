@@ -6,14 +6,16 @@ HEADERS = $(wildcard $(INCDIR)/*.h)
 OBJECTS = $(subst $(INCDIR), $(OBJDIR), $(HEADERS:.h=.o))
 
 CC = g++
-CFLAGS = `root-config --libs --cflags` \
+CFLAGS = -O2 `root-config --libs --cflags` \
 	-I$(INCDIR)
+
+LDFLAGS = `root-config --glibs` 
 
 all: $(OBJECTS) mymain
 
 mymain:	$(OBJECTS)
 	@echo "Building executable..."
-	@$(CC) $(CFLAGS) $^ -o mymain
+	@$(CC) $(CFLAGS) $^ -o mymain $(LDFLAGS)
 
 $(OBJDIR)/raw.o: $(SRCDIR)/raw.C $(INCDIR)/raw.h 
 	@echo "Building "$@"..."
