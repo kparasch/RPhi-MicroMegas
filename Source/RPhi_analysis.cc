@@ -9,6 +9,8 @@ int main(int argc, char* argv[])
     //
 
     TBenchmark *bench = new TBenchmark();
+    float realtime,cputime;
+
     bench->Start("full");
 
     double apv_thresholds[5] = {50,60,60,60,50};
@@ -43,10 +45,11 @@ int main(int argc, char* argv[])
     int nentries = (raw_tree->fChain)->GetEntries(); 
     cout <<"Number of entries detected: " <<  nentries << endl;
 
-    cin.get();
+   // cin.get();
     int counters[12]= {0,0,0,0,0,0,0,0,0,0,0,0};
     for(int i = 0; i < nentries; i++)
     {
+//        bench->Start("event");
         cout << "Event #" << i << endl;
         raw_tree->GetEntry(i);
         data_tree->GetEntry(i);
@@ -97,6 +100,9 @@ int main(int argc, char* argv[])
 
         }
         empty_channels->Finalize();
+        
+//        bench->Stop("event");
+//        bench->Start("cluster");
 
         cout << "Number of good hits detected: " << good_hits_id->size() << endl;
 
@@ -116,6 +122,9 @@ int main(int argc, char* argv[])
         vector<vector<double>> *big_r_cluster_fit_par_errs = new vector<vector<double>>();
 
         fit_big_clusters(r_big_cluster_id, r_clusters_hit_id, raw_tree, data_tree, big_cluster_peak_hit_id, big_r_cluster_fit_pars, big_r_cluster_fit_par_errs, r_cluster_hit_fit_pars, r_cluster_hit_fit_par_errs);
+        
+        //bench->Stop("cluster");
+        bench->Start("dump");
 
         dump(counters, n_hits, good_hits_id, raw_tree, r_clusters_hit_id, connector_of_apv);
 
@@ -185,8 +194,11 @@ int main(int argc, char* argv[])
 
             
         }
-             
-//        cin.get();
+//        bench->Stop("dump");     
+//        bench->Summary(realtime,cputime);
+//        bench->Reset();
+
+       // cin.get();
 
         delete good_hits_id;
         delete r_clusters_hit_id;
@@ -201,6 +213,7 @@ int main(int argc, char* argv[])
     counters[1] = nentries;
     summary(counters);
 
+//    bench->Summary(realtime,cputime);
     bench->Show("full");
     
 
