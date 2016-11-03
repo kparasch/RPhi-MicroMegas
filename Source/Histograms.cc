@@ -6,9 +6,41 @@ Histograms::Histograms(int n_of_chambers)
     second_chamber_present = n_of_chambers > 1;
     std::cout << "----Declaring Histograms----" << std::endl;
     hist_qmax = new TH1D*[n_hists]; 
+    hist_total_charge = new TH1D*[n_hists];
+    hist_hits = new TH1D*[n_hists];
+    hist_channels = new TH1D*[n_hists];
+    hist_w_channels = new TH1D*[n_hists];
+    hist_strips = new TH1D*[n_hists];
+    hist_w_strips = new TH1D*[n_hists];
+    hist_all_qmax = new TH1D*[n_hists]; 
+    hist_empty_qmax = new TH1D*[n_hists]; 
+    hist_all_tbins = new TH1D*[n_hists];
+    hist_hit_mean = new TH1D*[n_hists];
+    hist_hit_rms = new TH1D*[n_hists];
+    hist_apv_mean = new TH1D*[n_hists];
+    hist_apv_rms = new TH1D*[n_hists];
+    hist_empty_channels = new TH1D*[n_hists];
+    hist_empty_w_channels = new TH1D*[n_hists];
 
     std::cout << "----Generating Histograms----" << std::endl;
     Generate_Hists_Qmax(hist_qmax, second_chamber_present);
+    Generate_Hists_Total_Charge(hist_total_charge, second_chamber_present);
+    Generate_Hists_Hits(hist_hits, second_chamber_present);
+    Generate_Hists_Channels(hist_channels, second_chamber_present);
+    Generate_Hists_W_Channels(hist_w_channels, second_chamber_present);
+    Generate_Hists_Strips(hist_strips, second_chamber_present);
+    Generate_Hists_W_Strips(hist_w_strips, second_chamber_present);
+    Generate_Hists_All_Qmax(hist_all_qmax, second_chamber_present);
+    Generate_Hists_Empty_Qmax(hist_empty_qmax, second_chamber_present);
+    Generate_Hists_All_Tbins(hist_all_tbins, second_chamber_present);
+    Generate_Hists_Hit_Mean(hist_hit_mean, second_chamber_present);
+    Generate_Hists_Hit_Rms(hist_hit_rms, second_chamber_present);
+    Generate_Hists_Apv_Mean(hist_apv_mean, second_chamber_present);
+    Generate_Hists_Apv_Rms(hist_apv_rms, second_chamber_present);
+    Generate_Hists_Apv_Rms(hist_apv_rms, second_chamber_present);
+    Generate_Hists_Empty_Channels(hist_empty_channels, second_chamber_present);
+    Generate_Hists_Empty_W_Channels(hist_empty_w_channels, second_chamber_present);
+
 }
 
 Histograms::~Histograms()
@@ -19,6 +51,35 @@ Histograms::~Histograms()
         delete hist_qmax[i];
     }
     delete hist_qmax;
+}
+
+void Histograms::Save()
+{
+    TCanvas *c1 = new TCanvas();
+    hist_hits[0]->Draw("hist");
+    c1->Print("histograms.pdf(");
+    for(int i = 1; i < n_hists ; ++i) {hist_hits[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_qmax[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_total_charge[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_channels[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_w_channels[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_strips[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_w_strips[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_all_qmax[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_empty_qmax[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_all_tbins[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_hit_mean[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_hit_rms[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_apv_mean[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_apv_rms[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists ; ++i) {hist_empty_channels[i]->Draw("hist");c1->Print("histograms.pdf");}    
+    for(int i = 0; i < n_hists-1 ; ++i) {hist_empty_w_channels[i]->Draw("hist");c1->Print("histograms.pdf");}    
+
+    hist_empty_w_channels[n_hists-1]->Draw("hists");
+    c1->Print("histograms.pdf)");
+
+
+    delete c1;
 }
 
 TH1D* Histograms::GetQmax(int i) {return hist_qmax[i];}
@@ -128,39 +189,39 @@ void Histograms::Generate_Hists_W_Channels(TH1D **hist_w_channels, int second_ch
     }
 }
 
-void HistogramsGenerate_Hists_Strips(TH1D **hist_strips, int second_chamber_present)
+void Histograms::Generate_Hists_Strips(TH1D **hist_strips, int second_chamber_present)
 {
-    hist_strips[0] = new TH1D("hist_strips_0","hist_strips_0", 91, 0.5, 91.5);  
-    hist_strips[1] = new TH1D("hist_strips_1","hist_strips_1", 91, 0.5, 91.5);  
-    hist_strips[2] = new TH1D("hist_strips_2","hist_strips_2", 91, 0.5, 91.5);  
-    hist_strips[3] = new TH1D("hist_strips_3","hist_strips_3", 91, 0.5, 91.5);  
-    hist_strips[4] = new TH1D("hist_strips_4","hist_strips_4", 91, 0.5, 91.5);  
+    hist_strips[0] = new TH1D("hist_strips_0","hist_strips_0", 265, 0.5, 265.5);  
+    hist_strips[1] = new TH1D("hist_strips_1","hist_strips_1", 265, 0.5, 265.5);  
+    hist_strips[2] = new TH1D("hist_strips_2","hist_strips_2", 265, 0.5, 265.5);  
+    hist_strips[3] = new TH1D("hist_strips_3","hist_strips_3", 265, 0.5, 265.5);  
+    hist_strips[4] = new TH1D("hist_strips_4","hist_strips_4", 265, 0.5, 265.5);  
 
     if(second_chamber_present)
     {
-        hist_strips[5] = new TH1D("hist_strips_5","hist_strips_5", 91, 0.5, 91.5);  
-        hist_strips[6] = new TH1D("hist_strips_6","hist_strips_6", 91, 0.5, 91.5);  
-        hist_strips[7] = new TH1D("hist_strips_7","hist_strips_7", 91, 0.5, 91.5);  
-        hist_strips[8] = new TH1D("hist_strips_8","hist_strips_8", 91, 0.5, 91.5);  
-        hist_strips[9] = new TH1D("hist_strips_9","hist_strips_9", 91, 0.5, 91.5);  
+        hist_strips[5] = new TH1D("hist_strips_5","hist_strips_5", 265, 0.5, 265.5);  
+        hist_strips[6] = new TH1D("hist_strips_6","hist_strips_6", 265, 0.5, 265.5);  
+        hist_strips[7] = new TH1D("hist_strips_7","hist_strips_7", 265, 0.5, 265.5);  
+        hist_strips[8] = new TH1D("hist_strips_8","hist_strips_8", 265, 0.5, 265.5);  
+        hist_strips[9] = new TH1D("hist_strips_9","hist_strips_9", 265, 0.5, 265.5);  
     }
 }
 
 void Histograms::Generate_Hists_W_Strips(TH1D **hist_w_strips, int second_chamber_present)
 {
-    hist_w_strips[0] = new TH1D("hist_w_strips_0","hist_w_strips_0", 91, 0.5, 91.5);  
-    hist_w_strips[1] = new TH1D("hist_w_strips_1","hist_w_strips_1", 91, 0.5, 91.5);  
-    hist_w_strips[2] = new TH1D("hist_w_strips_2","hist_w_strips_2", 91, 0.5, 91.5);  
-    hist_w_strips[3] = new TH1D("hist_w_strips_3","hist_w_strips_3", 91, 0.5, 91.5);  
-    hist_w_strips[4] = new TH1D("hist_w_strips_4","hist_w_strips_4", 91, 0.5, 91.5);  
+    hist_w_strips[0] = new TH1D("hist_w_strips_0","hist_w_strips_0", 265, 0.5, 265.5);  
+    hist_w_strips[1] = new TH1D("hist_w_strips_1","hist_w_strips_1", 265, 0.5, 265.5);  
+    hist_w_strips[2] = new TH1D("hist_w_strips_2","hist_w_strips_2", 265, 0.5, 265.5);  
+    hist_w_strips[3] = new TH1D("hist_w_strips_3","hist_w_strips_3", 265, 0.5, 265.5);  
+    hist_w_strips[4] = new TH1D("hist_w_strips_4","hist_w_strips_4", 265, 0.5, 265.5);  
 
     if(second_chamber_present)
     {
-        hist_w_strips[5] = new TH1D("hist_w_strips_5","hist_w_strips_5", 91, 0.5, 91.5);  
-        hist_w_strips[6] = new TH1D("hist_w_strips_6","hist_w_strips_6", 91, 0.5, 91.5);  
-        hist_w_strips[7] = new TH1D("hist_w_strips_7","hist_w_strips_7", 91, 0.5, 91.5);  
-        hist_w_strips[8] = new TH1D("hist_w_strips_8","hist_w_strips_8", 91, 0.5, 91.5);  
-        hist_w_strips[9] = new TH1D("hist_w_strips_9","hist_w_strips_9", 91, 0.5, 91.5);  
+        hist_w_strips[5] = new TH1D("hist_w_strips_5","hist_w_strips_5", 91, 0.5, 265.5);  
+        hist_w_strips[6] = new TH1D("hist_w_strips_6","hist_w_strips_6", 91, 0.5, 265.5);  
+        hist_w_strips[7] = new TH1D("hist_w_strips_7","hist_w_strips_7", 91, 0.5, 265.5);  
+        hist_w_strips[8] = new TH1D("hist_w_strips_8","hist_w_strips_8", 91, 0.5, 265.5);  
+        hist_w_strips[9] = new TH1D("hist_w_strips_9","hist_w_strips_9", 91, 0.5, 265.5);  
     }
 }
 

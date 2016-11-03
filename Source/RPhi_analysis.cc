@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
         raw_tree->GetEntry(i);
         data_tree->GetEntry(i);
 
-        EmptyChannels *empty_channels = new EmptyChannels(second_chamber_present);
+        EmptyChannels *empty_channels = new EmptyChannels(second_chamber_present, connector_of_apv);
 
         int n_apv_hits[5] = {0, 0, 0, 0, 0};
 
@@ -85,7 +85,9 @@ int main(int argc, char* argv[])
             int index_LE = find_crossing_index(charge, index_max, -1, 0.);  //event_function.h
             int index_TE = find_crossing_index(charge, index_max, +1, 0.) -1; //event_function.h
             int index_40 = find_crossing_index(charge, index_max, -1, 0.4); //event_function.h
+            int connection = connector_of_apv[APV_id]-1;
             double total_charge = charge_sum(charge);
+            hists->GetTotalCharge(connection)->Fill(total_charge);
 
             double time_LE = linear_interp(0, 25*index_LE-12.5, charge[index_LE], 25*(index_LE+1)-12.5, charge[index_LE+1]);
             double time_TE = linear_interp(0, 25*index_TE-12.5, charge[index_TE], 25*(index_TE+1)-12.5, charge[index_TE+1]);
@@ -93,13 +95,34 @@ int main(int argc, char* argv[])
 
             n_apv_hits[APV_id]++;
             if( strip_of_channel[APV_channel+128*APV_id] == -1)
-                empty_channels->Iterate(charge, APV_id);
+                empty_channels->Iterate(charge, APV_id, hists);
 
             if(qmax > apv_thresholds[connector_of_apv[APV_id]] && strip_of_channel[APV_channel+128*APV_id] > 0)
                 good_hits_id->push_back(hit);
 
+            hists->GetAllQmax(connection)->Fill(qmax);
+            if(strip_of_channel[APV_channel + 128*APV_id] >0)
+            {
+                hists->GetQmax(connection)->Fill(qmax);
+                hists->GetChannels(connection)->Fill(APV_channel);
+                hists->GetWChannels(connection)->Fill(APV_channel,qmax);
+                hists->GetStrips(connection)->Fill(strip_of_channel[APV_channel+128*APV_id]);
+                hists->GetWStrips(connection)->Fill(strip_of_channel[APV_channel+128*APV_id],qmax);
+            }
+            else
+            {
+                hists->GetEmptyQmax(connection)->Fill(qmax);
+                for(int bin = 0 ; bin < 27 ; ++bin)
+                {
+                    hists->GetAllTbins(connection)->Fill(charge[bin]);
+                }
+                hists->GetEmptyChannels(connection)->Fill(APV_channel);
+                hists->GetEmptyWChannels(connection)->Fill(APV_channel,qmax);
+            }
         }
-        empty_channels->Finalize();
+        for(int apvs = 0 ; apvs < no_of_apvs ; apvs++) 
+            hists->GetHits(connector_of_apv[apvs]-1)->Fill(n_apv_hits[apvs]);
+        empty_channels->Finalize(hists);
         
 //        bench->Stop("event");
 //        bench->Start("cluster");
@@ -199,7 +222,7 @@ int main(int argc, char* argv[])
 //        bench->Reset();
 
        // cin.get();
-
+        
         delete good_hits_id;
         delete r_clusters_hit_id;
         delete r_clusters_strip_id;
@@ -211,12 +234,14 @@ int main(int argc, char* argv[])
         delete big_r_cluster_fit_par_errs;
     }
     counters[1] = nentries;
+
+    hists->Save();
+
     summary(counters);
 
 //    bench->Summary(realtime,cputime);
     bench->Show("full");
-    
-
+    delete hists;
     delete root_file;
     delete raw_tree;
     delete data_tree;

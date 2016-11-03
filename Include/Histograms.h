@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <TH1D.h>
+#include <TCanvas.h>
 
 
 class Histograms
@@ -11,6 +12,7 @@ class Histograms
     public:
         Histograms(int n_of_chambers);
         ~Histograms();
+        void Save();
         TH1D* GetQmax(int i);
         TH1D* GetTotalCharge(int i);
         TH1D* GetHits(int i);
@@ -48,7 +50,7 @@ class Histograms
         TH1D **hist_empty_channels;
         TH1D **hist_empty_w_channels;
         void Generate_Hists_Qmax(TH1D **hist_qmax, int second_chamber_present);
-        void Generate_Hists_Total_Charge(TH1D **hist_total, int second_chamber_present);
+        void Generate_Hists_Total_Charge(TH1D **hist_total_charge, int second_chamber_present);
         void Generate_Hists_Hits(TH1D **hist_hits, int second_chamber_present);
         void Generate_Hists_Channels(TH1D **hist_channels, int second_chamber_present);
         void Generate_Hists_W_Channels(TH1D **hist_w_channels, int second_chamber_present);

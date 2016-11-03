@@ -3,28 +3,25 @@
 
 #include <TMath.h>
 
+#include "Histograms.h"
+
 class EmptyChannels
 {
     public:
-        EmptyChannels(int second_chamber_present);
+        EmptyChannels(int second_chamber_present, int *config);
         ~EmptyChannels();
-        void Iterate(double *charge, int APV_id);
-        void Finalize();
-        int GetNEmptyHits();
+        void Iterate(double *charge, int APV_id, Histograms *hists);
+        void Finalize(Histograms *hists);
         int GetNApvEmptyHits(int i);
         double GetEmptyMeanApv(int i);
         double GetEmptyRmsApv(int i);
-        double GetEmptyMeanHits();
-        double GetEmptyRmsHits();
 
     private:
+        int *connector_of_apv;
         int n_apvs;
-        int n_empty_hits;
         int *n_apv_empty_hits;
         double *empty_mean_apv;
         double *empty_rms_apv;
-        double empty_mean_hits;
-        double empty_rms_hits;
 };
 
 #endif //__emptychannels_h__
